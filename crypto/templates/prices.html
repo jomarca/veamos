@@ -2,16 +2,20 @@
 {% block content %}
 
 {% if notfound %}
- {{notfound}}
+ <div class="container m-5">
+   <h4>{{notfound}}</h4> 
+  </div> 
 {% else %}
   {% if crypto.Response %}
-    Enter the right symbol, {{quote}} does not exist
+  <div class="container">
+    <h4>Enter the right symbol,<strong> {{quote}}</strong> does not exist</h4>
+  </div>
   {% endif %}
 {% for key,value in crypto.DISPLAY.items %}
 
   
 
-   <div class="jumbotron jumbotron-fluid">
+   <div class="jumbotron jumbotron-fluid bg-info text-white m-5 ">
       <div class="container">
           Name:  {{key}} <br>
           Price: {{value.USD.PRICE}}<br>

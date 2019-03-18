@@ -33,6 +33,6 @@ def login(request):
 
 def logout(request):
   if request.method == 'POST':
-    print('works')
-  else:
-    return render(request,'login.html')
+    auth.logout(request)
+    return redirect('home')
+ 

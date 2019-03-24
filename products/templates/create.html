@@ -2,6 +2,10 @@
 
 {% block content %}
 
+{% if lenerror %}
+ <h5 class="text-danger m-3">{{lenerror}}</h5> 
+{% endif %}
+
 {% if error %}
 
 {{error}}
@@ -13,23 +17,27 @@
 <form method='POST' action="{% url 'create' %}"
 enctype="multipart/form-data">
 {% csrf_token %}
-Title:
+Symbol/Crypto Name:
 <br>
 <input type="text" name='title'><br>
 Body:
 <br>
-<TEXTAREA type="textbox" name='body' size="500" ></TEXTAREA>
+<TEXTAREA type="textbox" style="height:200px ;width:550px"  name='body' size="1500" ></TEXTAREA>
 <br>
-URL:
+<small class="text-danger">Body is minimum 50 characters and maximum 250</small>
+<br>
+
+Project Website:
 <br>
 <input type="text" name='url'><br>
 Icon:
 <br>
 <input type="file" name='icon'><br>
+<small class="text-danger">Icon file has to be smaller than 2MB</small><br>
 Image:
 <br>
 <input type="file" name='image'><br>
-Icon:
+<small class="text-danger">Image file has to be smaller than 2MB</small><br>
 <br>
 <input class="btn btn-info" type="submit" value='Add Crypto'><br>
 

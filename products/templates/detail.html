@@ -2,21 +2,46 @@
 
 {% block content %}
 
-<div class="row mt-3">
-  <div class="col-8">
-    <img src="{{product.image.url}}" class="img-fluid"  alt="cryptonewsandprices">
+{% if morethanonevote %}
+<div class="container m-5">
+  <div class="col-8 ">
+  <h5>You can only upvote the same coin one time.</h5>
   </div>
-
-  <div class="col-4 mt-3">
-    <a href="javascript:{document.getElementById('upvote').submit()}"> 
-    <button class="btn btn-info"><i class="fas fa-thumbs-up"></i> Upvote {{product.votes_total}}</button>  
-    </a>
+  <div class="col-4">
+    <h5><a href="{% url 'home1' %}">Return back</a></h5>
   </div>
 </div>
 
-<form id='upvote' method='POST' action="{% url 'upvote' product.id %}">
-  {% csrf_token %}
-  <input type="hidden">
-</form>
+{% else %}
+  <div class="row mt-5">
+    <div class="col-8">
+      <div class="row">
+      <img src="{{product.image.url}}" class="img-fluid" style='height:200px'  alt="cryptonewsandprices">
+      <div class="ml-5">
+       <strong>Project Description:</strong> <br><br>
+        <p>
+            {{product.body}}
+        </p>
+        <br><br><br>
+        Number of Current Upvotes: {{product.votes_total}}<br>
+        
+        <p class="text-info mb-1"> Crypto added on: {{product.pub_date}}</p>
+      </div>
+      </div>
+    </div>
 
+    <div class="col-4 mt-3">
+      <a href="javascript:{document.getElementById('upvote').submit()}"> 
+      <button class="btn btn-info"><i class="fas fa-thumbs-up"></i> Upvote {{product.votes_total}}</button>  
+      </a>
+    </div>
+  </div>
+
+  <form id='upvote' method='POST' action="{% url 'upvote' product.id %}">
+    {% csrf_token %}
+    <input type="hidden">
+  </form>
+
+  
+{% endif %}
 {% endblock %}

@@ -13,28 +13,31 @@
 </div>
 
 {% else %}
-  <div class="row mt-5">
-    <div class="col-8">
-      <div class="row">
-      <img src="{{product.image.url}}" class="img-fluid" style='height:200px'  alt="cryptonewsandprices">
-      <div class="ml-5">
-       <strong>Project Description:</strong> <br><br>
+
+  <div class="row mt-5 col-md-12">
+    <div class="col-md-3">
+      <img src="{{product.image.url}}" class="img-fluid" style='height:180px'  alt="cryptonewsandprices">
+     </div>
+      <div class="col-md-7">
+       <strong>{{product.title}} - Project Description:</strong> <br><br>
         <p>
             {{product.body}}
         </p>
-        <br><br><br>
-        Number of Current Upvotes: {{product.votes_total}}<br>
         
+        Number of Current Upvotes: {{product.votes_total}}<br>
         <p class="text-info mb-1"> Crypto added on: {{product.pub_date}}</p>
       </div>
+      <div class="col-md-2 mt-5">
+          <a href="javascript:{document.getElementById('upvote').submit()}"> 
+              <button class="btn btn-info"><i class="fas fa-thumbs-up"></i> Upvote {{product.votes_total}}</button>  
+              </a>
       </div>
+      <div class="col-md-12 mr-3">
+        
+      </div>
+      
     </div>
 
-    <div class="col-4 mt-3">
-      <a href="javascript:{document.getElementById('upvote').submit()}"> 
-      <button class="btn btn-info"><i class="fas fa-thumbs-up"></i> Upvote {{product.votes_total}}</button>  
-      </a>
-    </div>
   </div>
 
   <form id='upvote' method='POST' action="{% url 'upvote' product.id %}">

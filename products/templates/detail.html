@@ -27,10 +27,13 @@
         Number of Current Upvotes: {{product.votes_total}}<br>
         <p class="text-info mb-1"> Crypto added on: {{product.pub_date}}</p>
       </div>
-      <div class="col-md-2 mt-5">
+      <div class="col-md-2 mt-4">
           <a href="javascript:{document.getElementById('upvote').submit()}"> 
               <button class="btn btn-info"><i class="fas fa-thumbs-up"></i> Upvote {{product.votes_total}}</button>  
               </a>
+              <br> <br>
+            <h5> <a href="{{product.url}}">Go to {{product.title}}</a></h5>
+      
       </div>
       <div class="col-md-12 mr-3">
         

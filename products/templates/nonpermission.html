@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- {% if lenerror %}
+ <h5 class="text-danger m-3">{{lenerror}}</h5> 
+{% endif %}
+
+{% if error %}
+
+{{error}}
+
+{% endif %} -->
+<div class="container mt-4">
+{{errordelete}}
+{{errroupdate}}
+<h3><a href="{% url 'detail' product.id %}"></a></h3>
+</div>
+{% endblock %}

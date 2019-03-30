@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- {% if lenerror %}
+ <h5 class="text-danger m-3">{{lenerror}}</h5> 
+{% endif %}
+
+{% if error %}
+
+{{error}}
+
+{% endif %} -->
+<div class="container mt-4">
+<h1>Edit your Crypto</h1>
+
+<form method='POST'>
+
+{% csrf_token %}
+{% for field in form %}
+<div class="form-group {% if field.errors %}alert alert-danger{% endif %}">
+  {{field.errors}}
+  {{field.label_tag}} <br>
+ {{field}}
+
+</div>
+{% endfor %}
+
+<!-- <button class="btn btn-info" type="submit">Edit<button> -->
+<input type="submit" value="Update" class="btn btn-info" >
+</form>
+<br>
+<h2>Or</h2>
+<br>
+<a href="{% url 'delete_product' product.id %}" class="btn btn-danger">Delete this Crypto</a>
+</div>
+{% endblock %}

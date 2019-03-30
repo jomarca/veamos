@@ -47,7 +47,14 @@
     {% csrf_token %}
     <input type="hidden">
   </form>
+  <br> <br><br>
+  <div class="container col-md-6 ">
+      {% if user.is_authenticated %}
+      <a href="{% url 'update_product' product.id %}" class="btn btn-info">Update this Crypto</a>
+      <a href="{% url 'delete_product' product.id %}" class="btn btn-danger">Delete this Crypto</a>
 
+      {% endif %}
+  </div>
   
 {% endif %}
 {% endblock %}

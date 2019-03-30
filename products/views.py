@@ -1,10 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin 
 from .models import Product,Vote
 from django.utils import timezone
 from django.db import IntegrityError
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.core.paginator import EmptyPage,PageNotAnInteger,Paginator
+from django.urls import reverse_lazy
+from django.views import generic
+
 # Create your views here.
 
 def home(request):
@@ -31,6 +35,7 @@ def search(request):
         'products':queryset_list
       }
       return render(request,'home1.html',context)
+
 @login_required
 def create(request):
   if request.method=='POST':
@@ -38,10 +43,10 @@ def create(request):
       product = Product()
       product.title = request.POST['title']
       product.body = request.POST['body']
-      if request.POST['url'].startswith('http://'):
+      if request.POST['url'].startswith('https://'):
         product.url = request.POST['url']
       else:
-        product.url = 'http://' + request.POST['url']
+        product.url = 'https://' + request.POST['url']
       product.icon = request.FILES['icon']
       product.image = request.FILES['image']
       product.pub_date = timezone.datetime.now()
@@ -64,6 +69,30 @@ def create(request):
 def detail(request,product_id):
   product = get_object_or_404(Product, pk=product_id)
   return render(request,'detail.html',{'product':product})
+
+
+class UpdateProduct(LoginRequiredMixin,generic.UpdateView):
+  model = Product
+  template_name = 'edit.html'
+  fields = ['title','body','url']
+  success_url = reverse_lazy('home')
+  def get_object(self):
+    product = super(UpdateProduct, self).get_object()
+    if not product.hunter == self.request.user:
+      raise Http404
+    return product
+
+class DeleteProduct(LoginRequiredMixin, generic.DeleteView):
+  model = Product
+  template_name = 'delete.html'
+  success_url = reverse_lazy('home')
+  #to ensure users can only delete own videos
+  def get_object(self):
+    product = super(DeleteProduct, self).get_object()
+    if not product.hunter == self.request.user:
+      raise Http404
+    return product
+
 
 # @login_required
 # def upvote(request,product_id,user_id):

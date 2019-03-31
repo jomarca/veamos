@@ -15,7 +15,7 @@
 {% else %}
 
   <div class="row mt-5 col-md-12">
-    <div class="col-md-3">
+    <div class="col-md-3 mb-3">
       <img src="{{product.image.url}}" class="img-fluid" style='height:180px'  alt="cryptonewsandprices">
      </div>
       <div class="col-md-7">
@@ -47,7 +47,22 @@
     {% csrf_token %}
     <input type="hidden">
   </form>
-  <br> <br><br>
+  <br> 
+  <div class="container">
+  <div class="row">
+      <div class="col-md-3 text-primary mr-1">
+     
+        </div>
+    <div class="col-md-3 text-primary mr-1">
+      Circulating Supply: {{ product.circulating_supply}}
+    </div>
+    <div class="col-md-3 text-primary">
+      Max Supply: {{ product.max_supply}}
+    </div>
+  </div>
+
+</div>
+  <br><br>
   <div class="container col-md-6 ">
       {% if user.is_authenticated %}
       <a href="{% url 'update_product' product.id %}" class="btn btn-info">Update this Crypto</a>

@@ -39,7 +39,7 @@ def search(request):
 @login_required
 def create(request):
   if request.method=='POST':
-    if request.POST['title'] and request.POST['body'] and request.POST['url'] and request.FILES['icon'] and request.FILES['image']:
+    if request.POST['title'] and request.POST['body'] and request.POST['url'] and request.POST['circulating_supply'] and request.FILES['image'] and request.POST['max_supply'] :
       product = Product()
       product.title = request.POST['title']
       product.body = request.POST['body']
@@ -47,13 +47,16 @@ def create(request):
         product.url = request.POST['url']
       else:
         product.url = 'https://' + request.POST['url']
-      product.icon = request.FILES['icon']
+      #product.icon = request.FILES['icon']
+      
+      product.circulating_supply = request.POST['circulating_supply']
+      product.max_supply = request.POST['max_supply']
       product.image = request.FILES['image']
       product.pub_date = timezone.datetime.now()
       product.votes_total = 1
       product.hunter = request.user
       #check that length of the file is between 20 and 250 characters
-      if len(request.POST['body']) < 50 or len(request.POST['body']) > 250:
+      if len(request.POST['body']) < 50 or len(request.POST['body']) > 270:
         return render(request,'create.html',{'lenerror':'The body needs to contain from 20 to 250 characters'})
       else:
         product.save()
@@ -74,7 +77,7 @@ def detail(request,product_id):
 class UpdateProduct(LoginRequiredMixin,generic.UpdateView):
   model = Product
   template_name = 'edit.html'
-  fields = ['title','body','url']
+  fields = ['title','body','url','max_supply','circulating_supply']
   success_url = reverse_lazy('home')
   def get_object(self):
     product = super(UpdateProduct, self).get_object()

@@ -38,7 +38,7 @@
                 <a class="nav-link" href="{% url 'prices' %}">Prices</a>
               </li>
               <li class="nav-item">
-                  <a class="nav-link" href="{% url 'home1' %}">Cryptos</a>
+                  <a class="nav-link" href="{% url 'home1' %}">Crypto Hunt</a>
                 </li>
               <li class="nav-item">
                   <a class="nav-link" href="https://www.instagram.com/jomarca4/"><i class="fab fa-instagram"></i></a>
@@ -46,6 +46,7 @@
                 <li class="nav-item">
                   <a class="nav-link" href="https://twitter.com/cryptonewsandp1/"><i class="fab fa-twitter"></i></a>
                 </li>
+                
               
             </ul>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
@@ -68,7 +69,7 @@
             
             <form class="form-inline my-2 my-lg-0" method="POST" action="{% url 'prices' %}">
               {% csrf_token %}
-              <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="quote">
+              <input class="form-control mr-sm-2" type="search" placeholder="Look Up Coin Price" aria-label="Search" name="quote">
               <button class="btn btn-primary  my-2 my-sm-0" type="submit">Search</button>
             </form>
           </div>

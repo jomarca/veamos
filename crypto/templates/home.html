@@ -3,6 +3,7 @@
 
 {% block content %}
 
+
 <table class="table table-bordered" style="width:100%">
     <thead>
       <tr>
@@ -28,20 +29,17 @@
       {% endfor %}
     </tbody>
   </table>
- 
 
 
-
-<div class="jumbotron bg-info" >
-    <h1 class="display-4 text-white font-weight-bold">Welcome to Crypto News!</h1>
-     <h4 class="text-white">Find all latest crypto news, look up the price of your favorite coins and upvote your favorite projects.</h4>
-  </div>
-
-<div class="container">
+<div class="container mt-5">
+    <div class="card text-center p-3 bg-success text-white"> <h5>Visit our new <a href="{% url 'home1' %}">Crypto Hunt section</a>  to add and upvote your favorite crypto projects.</h5>
+    </div>
+    <br>
   <div class="row">
+     
       {% for x in api.Data %}
-      <div class="col-sm">
-        <div class="card" style="width: 18rem;">
+      <div class="col-sm-4">
+        <div class="card" >
             <img src={{x.imageurl}} class="card-img-top" alt="Crypto News and Prices">
             <div class="card-body">
               <h5 class="card-title">{{x.title}} </h5>

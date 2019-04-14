@@ -184,6 +184,7 @@ class DeleteProduct(LoginRequiredMixin, generic.DeleteView):
 #       product.votes_total += 1
 #       product.save()
 #       return redirect('/products/'+str(product.id))
+#test
 
 @login_required
 def upvote(request,product_id):

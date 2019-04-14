@@ -69,7 +69,106 @@
       <a href="{% url 'delete_product' product.id %}" class="btn btn-danger">Delete this Crypto</a>
 
       {% endif %}
-  </div>
-  
+ 
 {% endif %}
+
+</div>
+
 {% endblock %}
+<!-- 
+<div class="container mt-5">
+{% with comments.count as total_comments %}
+  <h3>
+    Number of Total Comments for {{product.title}}: {{ total_comments }} 
+  </h3>
+{% endwith %}
+<div class="row mt-4">
+  <div class="col-md-5">
+      <h4 class="text-info">Add a new comment</h4>
+      <form action="{% url 'detail' product.id %}" method="post">
+        {{ comment_form.as_p }}
+        {% csrf_token %}
+        <p><input type="submit" value="Add comment"></p>
+      </form>
+  </div>
+  <div class="col-md-5">
+      {% for comment in comments %}
+    <div class="alert alert-dark">
+        <h4 class="alert-heading">Comment {{ forloop.counter }} by {{ comment.name }}</h4>
+      </p>
+      <p>
+        {{ comment.body }}
+      </p>
+      <hr>
+      <p class="mb-0">
+        {{ comment.created }}
+      </p>
+      <form action="{% url 'detail' product.id %}" method="post">
+          {{ comment_form.as_p }}
+          {% csrf_token %}
+          <p><input type="submit" value="Replay"></p>
+        </form>
+    </div>
+    {% if user.is_authenticated %}
+  <a href="{% url 'delete_comment' comment.id %}" class="btn btn-info">Delete this Comment</a>
+ 
+
+  {% endif %}
+{% empty %}
+  <p>There are no comments yet.</p>
+</div>
+
+{% endfor %}
+
+
+{% if new_comment %}
+
+  <h2>Your comment has been added.</h2>
+{% else %}
+
+ 
+{% endif %}
+
+</div>
+</div>
+</div> -->
+
+
+
+
+
+<!-- 
+{% with comments.count as total_comments %}
+  <h2>
+    {{ total_comments }} comment{{ total_comments }}
+  </h2>
+{% endwith %}
+
+{% for comment in comments %}
+  <div class="comment">
+    <p class="info">
+      Comment {{ forloop.counter }} by {{ comment.name }}
+      {{ comment.created }}
+    </p>
+    {{ comment.body }}
+  </div>
+{% empty %}
+  <p>There are no comments yet.</p>
+{% endfor %}
+
+{% if new_comment %}
+  <h2>Your comment has been added.</h2>
+{% else %}
+  <h2>Add a new comment</h2>
+  <form action="{% url 'detail' product.id %}" method="post">
+    {{ comment_form.as_p }}
+    {% csrf_token %}
+    <p><input type="submit" value="Add comment"></p>
+  </form>
+
+  {% if user.is_authenticated %}
+  <a href="{% url 'update_comment' product.id %}" class="btn btn-info">Update this Comment</a>
+ 
+
+  {% endif %}
+{% endif %} -->

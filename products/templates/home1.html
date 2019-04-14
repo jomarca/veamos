@@ -12,17 +12,53 @@
   </div>
 </div>
 
-<div class="search">
-  <form action="{% url 'search' %}">
-    <div class="form-row">
-      <div class="col-md-4 mb-3">
-        <label class="sr-only">keywords</label>
-        <input type="text" name="keywords" class="form-control" placeholder="Enter Coin Name" >
-        <button class="btn btn-secondary btn-block mt-4" type="submit">Find Project</button>
-      </div>
+<div class="container">
+  <div class="row">
+  <div class="col-md-10">
+  <nav class="navbar-expand-lg navbar-light bg-light">
+    <div class="navbar-collapse">
+      <ul class="navbar-nav m-3">
+        <p>
+          <b>Order By</b>
+          <br>
+          <a href="{% url 'ordenardate'  %}">Pub Date</a>
+        </p>
+      </ul>
+      <ul class="navbar-nav m-3">
+        <p>
+          <b>Order By</b>
+          <br>
+          <a href="{% url 'ordenarname' %}">Name</a>
+        </p>
+      </ul>
+      <ul class="navbar-nav m-3">
+        <p>
+          <b>Order By</b>
+          <br>
+          <a href="{% url 'votes_total' %}">Number of Votes</a>
+        </p>
+      </ul>
+      <ul>
+        <div class="search m-2">
+          <form action="{% url 'search' %}">
+            <div class="form-row">
+                <label class="sr-only">keywords</label>
+                <input type="text" name="keywords" class="form-control" placeholder="Enter Coin Name" >
+                <button class="btn btn-info btn-block mt-4" type="submit">Find Project</button>
+           
+            </div>
+          </form>
+        </div>
+
+      </ul>
     </div>
-  </form>
+  </nav>
 </div>
+
+
+</div>
+<br><br>
+
 
 {% for product in products %}
 <div class="row pb-3 m-3">
@@ -47,7 +83,8 @@
 
 </form>
 
- 
+
+
 
 {% endfor %}
 

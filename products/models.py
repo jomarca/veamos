@@ -2,6 +2,9 @@ from django.db import models
 
 # Create your models here.
 from django.contrib.auth.models import User
+from django.utils import timezone
+from datetime import datetime
+
 
 class Product(models.Model):
   title = models.CharField(max_length=255)
@@ -14,6 +17,7 @@ class Product(models.Model):
   max_supply = models.IntegerField()
   circulating_supply = models.IntegerField()
   hunter = models.ForeignKey(User, on_delete = models.CASCADE)
+  
 
   def __str__(self):
     return self.title
@@ -31,3 +35,20 @@ class Vote(models.Model):
 
   class Meta:
     unique_together = ('product','user')
+
+# class Comment(models.Model):
+#     product = models.ForeignKey(Product,on_delete=models.CASCADE, related_name='comments')
+#     name = models.CharField(max_length=80)
+#     email = models.EmailField()
+#     body = models.TextField()
+#     created = models.DateTimeField(auto_now_add=True)
+#     updated = models.DateTimeField(auto_now=True)
+#     active = models.BooleanField(default=True)
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    
+
+#     class Meta:
+#         ordering = ('created',)
+
+#     def __str__(self):
+#         return 'Comment by {} on {}'.format(self.name, self.post)

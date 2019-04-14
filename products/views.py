@@ -8,7 +8,21 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.core.paginator import EmptyPage,PageNotAnInteger,Paginator
 from django.urls import reverse_lazy
 from django.views import generic
+from django.forms import ModelForm
+from matplotlib.backends.backend_agg import FigureCanvasAgg
+import matplotlib.pyplot as plt
+import numpy as np
 
+
+
+# from .models import Comment
+
+
+# class CommentForm(ModelForm):
+#     class Meta:
+#         model = Comment
+#         fields = ('name', 'email', 'body')
+  
 # Create your views here.
 
 def home(request):
@@ -23,6 +37,8 @@ def home(request):
   }
   return render(request,'home1.html', context)
   # return render(request,'home1.html', {'products':products})
+
+
 
 def search(request):
   queryset_list = Product.objects.order_by('pub_date')
@@ -72,6 +88,65 @@ def create(request):
 def detail(request,product_id):
   product = get_object_or_404(Product, pk=product_id)
   return render(request,'detail.html',{'product':product})
+
+# def detail(request,product_id):
+#   product = get_object_or_404(Product, pk=product_id)
+
+#     # List of active comments for this post
+#   comments = product.comments.filter(active=True)
+
+#   if request.method == 'POST':
+#         # A comment was posted
+#     comment_form = CommentForm(data=request.POST)
+#     if comment_form.is_valid():
+#             # Create Comment object but don't save to database yet
+#       new_comment = comment_form.save(commit=False)
+#             # Assign the current post to the comment
+#       new_comment.product = product
+#       new_comment.user = request.user
+#             # Save the comment to the database
+#       new_comment.save()
+#   else:
+#     comment_form = CommentForm()   
+
+#   return render(request,
+#                   'detail.html',
+#                   {'product': product,
+#                    'comments': comments,
+                  #  'comment_form': comment_form})
+
+# def testpandas(request):
+#   t = np.arange(0.0, 2.0, 0.01)
+#   s = 1 + np.sin(2 * np.pi * t)
+
+#   fig, ax = plt.subplots()
+#   ax.plot(t, s)
+
+#   ax.set(xlabel='time (s)', ylabel='voltage (mV)', title='About as simple as it gets, folks')
+#   ax.grid()
+#   response = HttpResponse(content_type = 'image/png')
+#   canvas = FigureCanvasAgg(fig)
+  
+#   return render(request,
+#                   'test.html',
+#                   {'graph': canvas,
+#                   })
+
+
+# def detail(request,product_id):
+#   product = get_object_or_404(Product, pk=product_id)
+#   return render(request,'detail.html',{'product':product})
+
+# class DeleteComment(LoginRequiredMixin, generic.DeleteView):
+#   model = Comment
+#   template_name = 'detail.html'
+#   # slug_url_kwarg = 'id'
+#   #to ensure users can only delete own videos
+#   def get_object(self):
+#     product = super(DeleteComment,self).get_object()
+#     if not product.user == self.request.user:
+#       raise Http404
+#     return product
 
 
 class UpdateProduct(LoginRequiredMixin,generic.UpdateView):
@@ -131,3 +206,41 @@ def upvote(request,product_id):
 #     product.votes_total += 1
 #     product.save()
 #     return redirect('/products/'+str(product.id))
+
+#TOD LO DE ORDENAR:
+
+def ordenardate(request):
+  # products = Product.objects.all()
+  products = Product.objects.order_by('pub_date')
+  paginator = Paginator(products, 10)
+  page = request.GET.get('page')
+  paged_listings = paginator.get_page(page)
+
+  context = {
+    'products':paged_listings
+  }
+  return render(request,'home1.html', context)
+
+def ordenarname(request):
+  # products = Product.objects.all()
+  products = Product.objects.order_by('title')
+  paginator = Paginator(products, 10)
+  page = request.GET.get('page')
+  paged_listings = paginator.get_page(page)
+
+  context = {
+    'products':paged_listings
+  }
+  return render(request,'home1.html', context)
+
+def votes_total(request):
+  # products = Product.objects.all()
+  products = Product.objects.order_by('-votes_total')
+  paginator = Paginator(products, 10)
+  page = request.GET.get('page')
+  paged_listings = paginator.get_page(page)
+
+  context = {
+    'products':paged_listings
+  }
+  return render(request,'home1.html', context)

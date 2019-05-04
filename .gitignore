@@ -7,4 +7,5 @@ db.sqlite3
 media
 mysite/__pycache__*
 settings.py
+crypto/__pycache__/*
 

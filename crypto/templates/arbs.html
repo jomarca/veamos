@@ -31,30 +31,63 @@
   } 
 </style> 
 
-<div style="overflow-x:auto" class="container mt-5">
-  <h5 class="text-info">Note: Arbs are updated every 15 minutes and prices shown are live prices from the exchanges</h5>
-<table style="width:100%">
+
+
+<div style="overflow-x:auto" class="container mt-3">
+  <div class="card col-md-12 bg-white text-info border-1">
+    <p><strong> Arb Statistics last 24 hours:</strong>
+    <br>
+    <div class="row">
+   <div class="col-md-3">
+    Number of arbs found: <strong>{{statistics.counta}}</strong> 
+  </div>
+  <div class="col-md-3">
+    Max percentage gain: <strong> {{statistics.maximo.percentage|floatformat:2}} %</strong>
+  </div>
+</div>
+  </p>
+</div>
+  <h5 class="mt-3 text-info">Note: Arbs are updated every 15 minutes and prices shown are live prices from the exchanges</h5>
+
+ 
+  <div class="dropdown">
+      <button class="btn btn-info dropdown-toggle mb-3" type="button" data-toggle="dropdown">Show Arbs Greater Than
+      <span class="caret"></span></button>
+      <ul class="dropdown-menu">
+       
+        <li class="text-center"><a href="{% url 'arbsgreaterthan0' %}">0%</a></li>
+        <li class="text-center"><a href="{% url 'arbsgreaterthan1' %}">1%</a></li>
+        <li class="text-center"><a href="{% url 'arbsgreaterthan2' %}">2%</a></li>
+        <li class="text-center"><a href="{% url 'arbsgreaterthan5' %}">5%</a></li>
+     
+      </ul>
+    </div>
+<table class="mb-5" style="width:100%">
   <tr>
-    <th>Pair</th>
+    <th>Pair   <a href="{% url 'arbsbycoindown' %}">    <i class=" ml-3 fas fa-sort-alpha-down" style="color:aqua"></i></a>
+      <a href="{% url 'arborderbycoinup' %}"><i class="pull-right fas fa-sort-alpha-up" style="color:aqua"></i> </a></th>
+    <th>Percentage<a href="{% url 'percentageup' %}">    <i class=" ml-3 fas fa-sort-numeric-up" style="color:aqua"></i></a></th>
     <th>Exchange Buy</th> 
     <th>Exchange Sell</th>
     <th>Buy Price</th>
     <th>Sell Price</th>
     <!-- <th>Gain</th> -->
-    <th>Percentage Gain</th>
-    <th>Created</th>
+    
+    
+    <th>Created<a href="{% url 'cryptoarbs' %}">    <i class=" ml-3 fas fa-sort-down" style="color:aqua"></i></a></th>
   
   </tr>
 {% for x in arbs %}
 
         <tr>
         <td  style="font-weight: bold">{{x.pair}}</td>
+        <td style="color: green;">{{x.percentage|floatformat:2}} %</td>
         <td>{{x.exchangebuy}}</td> 
         <td>{{x.exchangesell}}</td>
         <td>{{x.buyprice}}</td> 
         <td>{{x.sellingprice}}</td>
         <!-- <td>{{x.gain}}</td> -->
-        <td style="color: green;">{{x.percentage|floatformat:2}} %</td>
+      
         <td style="color: blue; ">{{x.created_at|naturaltime}}</td>
         
       </tr>

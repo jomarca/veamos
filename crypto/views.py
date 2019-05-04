@@ -133,9 +133,99 @@ def cryptoarbs(request):
     arbitrage = Arbscrypto.objects.order_by('-created_at')
     arbitrage = arbitrage[0:30]
     
+    #statistics
+    hoyes = datetime.datetime.today().strftime('%Y-%m-%d')
+    statistics = Arbscrypto.objects.filter(created_at__date= hoyes)
+    # maximo = statistics['percentage'][0]
+    maximo = Arbscrypto.objects.filter(created_at__date= hoyes).order_by('-percentage').values()
+    maximo = maximo[0]
+    statistics = {'counta':statistics.count(), 'maximo':maximo}
     
     context = {
-            'arbs':arbitrage,      
+            'arbs':arbitrage, 
+            'statistics':statistics     
+                } 
+    return render(request,'arbs.html', context)
+
+#filter for Cryptoarbs
+def arborderbycoindown(request):
+  if request.method =='GET':
+    arbitragebycoin = Arbscrypto.objects.order_by('-pair')
+    arbitragebycoin = arbitragebycoin[0:30]
+    
+    
+    context = {
+            'arbs':arbitragebycoin,      
+                } 
+    return render(request,'arbs.html', context)
+  
+def arborderbycoinup(request):
+  if request.method =='GET':
+    arbitragebycoin = Arbscrypto.objects.order_by('pair')
+    arbitragebycoin = arbitragebycoin[0:30]
+    
+    
+    context = {
+            'arbs':arbitragebycoin,      
+                } 
+    return render(request,'arbs.html', context)
+
+def percentageup(request):
+  if request.method =='GET':
+    arbitragebycoin = Arbscrypto.objects.order_by('-percentage')
+    arbitragebycoin = arbitragebycoin[0:30]
+    
+    
+    context = {
+            'arbs':arbitragebycoin,      
+                } 
+    return render(request,'arbs.html', context)
+
+def arbsgreaterthan0(request):
+  if request.method =='GET':
+  
+    arbitragebycoin = Arbscrypto.objects.filter(percentage__gte=0).order_by('-created_at')
+    arbitragebycoin = arbitragebycoin[0:30]
+    
+    
+    context = {
+            'arbs':arbitragebycoin,      
+                } 
+    return render(request,'arbs.html', context)
+
+def arbsgreaterthan1(request):
+  if request.method =='GET':
+  
+    arbitragebycoin = Arbscrypto.objects.filter(percentage__gte=1).order_by('-created_at')
+    arbitragebycoin = arbitragebycoin[0:30]
+    
+    
+    context = {
+            'arbs':arbitragebycoin,      
+                } 
+    return render(request,'arbs.html', context)
+
+def arbsgreaterthan2(request):
+  if request.method =='GET':
+  
+    arbitragebycoin = Arbscrypto.objects.filter(percentage__gte=2).order_by('-created_at')
+    arbitragebycoin = arbitragebycoin[0:30]
+    
+    
+    context = {
+            'arbs':arbitragebycoin,      
+                } 
+    return render(request,'arbs.html', context)
+
+def arbsgreaterthan5(request):
+  if request.method =='GET':
+  
+    arbitragebycoin = Arbscrypto.objects.filter(percentage__gte=5).order_by('-created_at')
+    arbitragebycoin = arbitragebycoin[0:30]
+    
+    
+    context = {
+            'arbs':arbitragebycoin,      
                 } 
     return render(request,'arbs.html', context)
 
@@ -188,7 +278,7 @@ def searchcrypto(request):
 def deletearbsfromdatabase(request):
   
   if request.method =='GET':
-    Arbscrypto.objects.filter(createdAt__lte=(datetime.datetime.now() - datetime.timedelta(days=1)).delete())
+    Arbscrypto.objects.filter(created_at__lte=(datetime.datetime.now() - datetime.timedelta(days=1)).delete())
    
 
     return render(request,'home.html',{'deletion':'deletion completed'})
@@ -253,7 +343,7 @@ class ThreadingExample(object):
     until the application exits.
     """
     time.sleep(1)
-    def __init__(self, interval=900):
+    def __init__(self, interval=300):
         """ Constructor
         :type interval: int
         :param interval: Check interval, in seconds
@@ -266,6 +356,7 @@ class ThreadingExample(object):
 
     def run(self):
         """ Method that runs forever """
+        
         while True:
             # Do something
             print('Doing something imporant in the background')
@@ -329,7 +420,7 @@ class ThreadingExample(object):
                 import urllib.parse
                 from urllib.parse import urlencode, quote_plus
 
-                symbol= ['ETH_BTC','NEO_BTC','LTC_BTC']
+                symbol= ['NEO_ETH','ETH_BTC','NEO_BTC','LTC_BTC','XRP_ETH','EOS_ETH','DASH_BTC','XLM_BTC','ADA_ETH','XRP_BTC','ETC_BTC','TRX_ETH','ZEC_BTC','ETH_USDT','BTC_USDT','LTC_ETH','EOS_BTC','XLM_ETH','ONT_BTC','ONT_ETH','ATOM_BTC','ATOM_ETH',]
                 case_list = []
                 #pureba symbolo:
                 #COSS   LTC-BTC
@@ -936,23 +1027,23 @@ class ThreadingExample(object):
 
                 #CASELIST is what I send in the View function to website
 
-                for item in case_list:
-                  print(item)
-                  arbsfound = Arbscrypto()
-                  arbsfound.pair = item['pair']
-                  arbsfound.exchangebuy = item['exchangecompra']
-                  arbsfound.exchangesell = item['exchangeventa']
-                  arbsfound.percentage = item['percentage']
-                  arbsfound.buyprice = item['pricecompra']
-                  arbsfound.sellingprice = item['priceventa']
-                  arbsfound.gain = item['ganancia']
+                  for item in case_list:
+                    
+                    arbsfound = Arbscrypto()
+                    arbsfound.pair = item['pair']
+                    arbsfound.exchangebuy = item['exchangecompra']
+                    arbsfound.exchangesell = item['exchangeventa']
+                    arbsfound.percentage = item['percentage']
+                    arbsfound.buyprice = item['pricecompra']
+                    arbsfound.sellingprice = item['priceventa']
+                    arbsfound.gain = item['ganancia']
 
-                  
-                  try:
-                    arbsfound.save()
-                    print('arbs works')
-                  except:
-                    pass
+                    
+                    try:
+                      arbsfound.save()
+                      print('arbs works')
+                    except:
+                      pass
 
             
             arbs(self)

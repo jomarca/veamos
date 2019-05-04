@@ -39,7 +39,6 @@ def home(request):
   # return render(request,'home1.html', {'products':products})
 
 
-
 def search(request):
   queryset_list = Product.objects.order_by('pub_date')
   if 'keywords' in request.GET:

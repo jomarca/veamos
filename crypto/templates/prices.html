@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
 
+{% load humanize %}
+
 {% if notfound %}
- <div class="container m-5">
+ <div class="container mt-5">
    <h4>{{notfound}}</h4> 
   </div> 
 {% else %}
@@ -11,11 +13,13 @@
     <h4>Enter the right symbol,<strong> {{quote}}</strong> does not exist</h4>
   </div>
   {% endif %}
+
+
 {% for key,value in crypto.DISPLAY.items %}
 
   
 
-   <div class="jumbotron jumbotron-fluid bg-info text-white m-5 ">
+   <div class="jumbotron jumbotron-fluid bg-info text-white mt-5 ">
       <div class="container">
           Name:  {{key}} <br>
           Price: {{value.USD.PRICE}}<br>
@@ -27,5 +31,33 @@
 
   {% endfor %}
   {% endif %}
-  <br><br>
+  <br>
+  <h5 class="text-info">Note: prices are updated every 15 minutes. Prices search suing the top bar search function are live prices</h5>
+  <table class="table table-bordered" style="width:100%">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Price</th>
+        <th scope="col">24 High</th>
+        <th scope="col">24 Low</th>
+        <th scope="col">Market Cap</th>
+      </tr>
+    </thead>
+    <br>
+    
+    {% for key,value in price.items %}
+     
+    <tbody>
+      <tr>
+       
+        <td>{{key}}</td>
+        <td>${{value.USD.PRICE|floatformat:3|intcomma}}</td>
+        <td>${{value.USD.HIGHDAY|floatformat:0|intcomma}}</td>
+        <td>${{value.USD.LOWDAY|floatformat:0|intcomma}}</td>
+        <td>${{value.USD.MKTCAP|floatformat:0|intcomma}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 {% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% load humanize %}
+
+
+<style> 
+  table { 
+      border-collapse: collapse; 
+  } 
+  th { 
+      background-color:black; 
+      Color:white; 
+  } 
+  th, td { 
+      width:150px; 
+      text-align:center; 
+      border:1px solid blue; 
+      padding:10px 
+    
+  } 
+  .geeks { 
+      border-right:hidden; 
+  } 
+  .gfg { 
+      border-collapse:separate; 
+      border-spacing:0 15px; 
+  } 
+  h1 { 
+      color:green; 
+  } 
+</style> 
+
+<div class="container mt-5">
+  <h5 class="text-info">Note: Arbs are updated every 15 minutes and prices shown are live prices from the exchanges</h5>
+<table style="width:100%">
+  <tr>
+    <th>Pair</th>
+    <th>Exchange Buy</th> 
+    <th>Exchange Sell</th>
+    <th>Buy Price</th>
+    <th>Sell Price</th>
+    <!-- <th>Gain</th> -->
+    <th>Percentage Gain</th>
+    <th>Created</th>
+  
+  </tr>
+{% for x in arbs %}
+
+        <tr>
+        <td  style="font-weight: bold">{{x.pair}}</td>
+        <td>{{x.exchangebuy}}</td> 
+        <td>{{x.exchangesell}}</td>
+        <td>{{x.buyprice}}</td> 
+        <td>{{x.sellingprice}}</td>
+        <!-- <td>{{x.gain}}</td> -->
+        <td style="color: green;">{{x.percentage|floatformat:2}} %</td>
+        <td style="color: blue; ">{{x.created_at|naturaltime}}</td>
+        
+      </tr>
+     
+   
+
+    
+       
+
+  {% endfor %}
+</table>
+</div>
+{% endblock %}

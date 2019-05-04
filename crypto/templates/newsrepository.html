@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+{% load humanize %}
+
+
+<div class="container mt-2">
+  <div class="row">
+  <div class="col-md-12">
+  <nav class="navbar-expand-lg navbar-light bg-light">
+    <div class="navbar-collapse">
+      <ul class="navbar-nav m-3">
+            <!-- <form method='POST' action="{% url 'showdate' %}"
+            enctype="multipart/form-data">
+            {% csrf_token %}
+            Date:
+            <br>
+            <input type="text" name='date' placeholder="YYYY-MM-DD"><br>
+            <small>Remember format is YYYY-MM-DD</small> <br>
+            <input class="btn btn-info mt-1" type="submit" value='Filter News'><br>
+
+            </form> -->
+            </p>
+            <ul>
+              <div class="search">
+                <form action="{% url 'showdate' %}">
+                    {% csrf_token %}
+                    Look up news by Date:
+                  <div class="form-row">
+                      <label class="sr-only">Date</label>
+                      <input type="text" name='date' placeholder="YYYY-MM-DD"><br>
+                      <input class="btn btn-info mt-1" type="submit" value='Filter News'><br>
+                 
+                  </div>
+                </form>
+              </div>
+            </ul>
+
+
+
+            <ul>
+            <div class="search">
+              <form action="{% url 'searchcrypto' %}">
+                  {% csrf_token %}
+                  Look up news by word:
+                <div class="form-row">
+                    <label class="sr-only">keywords</label>
+                    <input type="text" name="keywords" class="form-control" placeholder="Look up News. E.g BTC" >
+                    <button class="btn btn-info btn-block mt-4" type="submit">Find by Keyword</button>
+               
+                </div>
+              </form>
+            </div>
+          </ul>
+        
+          <ul>
+            <div class="search">
+              <form action="{% url 'searchanddate' %}">
+                  {% csrf_token %}
+                  Look up entering both a date and keyword:
+                <div class="form-row">
+                    <label class="sr-only">keywords</label>
+                    <div class="mr-2">
+                    <input type="text" name="keywords" class="form-control" placeholder="Look up News. E.g BTC" >
+                  </div>
+                    <br>
+                    <input type="text" name='date' placeholder="YYYY-MM-DD"><br>
+                    
+                    <button class="btn btn-info btn-block mt-4" type="submit">Find by Date and Keyword</button>
+               
+                </div>
+          </ul>
+          </div>
+        
+        </div>
+       
+      </div>
+    </div>
+
+    {% if selectadate %}
+      <div class="container mt-5">
+        <h5>{{selectadate}}</h5> 
+      </div>
+      
+      
+        
+    {% endif %}
+
+
+    {% if error %}
+      <div class="container mt-5">
+        <h5>{{error}}</h5> 
+      </div>
+      
+      
+        
+    {% endif %}
+
+    {% if nodataentered %}
+      <div class="container mt-5">
+        <h5>{{nodataentered}}</h5> 
+      </div>
+      
+      
+        
+    {% endif %}
+
+    {% if notresultsfound %}
+
+      <div class="container mt-5">
+        <h5>{{notresultsfound}}</h5> 
+      </div>
+
+    {% endif %}
+
+<div class="container mt-5">
+ 
+  <br>
+<div class="row">
+  {% if createdorder %}
+
+      <div class="container mb-3">
+        <h5>Showing results by publication date. Most recent news on top.</h5> 
+      </div>
+
+    {% endif %}
+    {% for x in news %}
+
+    <div class="col-sm-4">
+      <div class="card" >
+          <img src={{x.image}} class="card-img-top" alt="Crypto News and Prices">
+          <div class="card-body">
+            <h5 class="card-title">{{x.title}} </h5>
+            <p class="card-text">{{x.body|truncatechars:300}}... </p>
+            <a href={{x.url}}  class="btn btn-primary">Read more</a>
+            <small> Published {{x.created_at|naturaltime}}</small>
+          </div>
+        </div>
+        <br>
+      </div>
+
+      {% endfor %}
+      
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    {% if news.has_other_pages %}
+    <ul class="pagination">
+            {% if news.has_previous %}
+              <li class="page-item">
+                <a href="?page={{news.previous_page_number}}" class="page-link">&laquo;</a>
+              </li>
+            {% else %}
+              <li class="page-item disabled">
+                <a class="page-link">&laquo;</a>
+              </li>
+            {% endif %}
+        {% for i in news.paginator.page_range %}
+          {% if news.number == i %}
+           <li class="page-item active">
+           <a href="" class="page-link">{{i}}</a>
+            </li>
+          {% else %}
+            <li class="page-item">
+            <a href="?page={{i}}" class="page-link">{{i}}</a>
+            </li>
+          {% endif %}
+          {% if news.has_next %}
+          <li class="page-item">
+            <a href="?page={{news.next_page_number}}" class="page-link">&raquo;</a>
+          </li>
+          {% else %}
+            <li class="page-item disabled">
+              <a class="page-link">&raquo;</a>
+            </li>
+           {% endif %}
+        {% endfor %}
+      </ul>
+      {% endif %}
+  </div>
+</div>
+
+
+
+</div>
+{% endblock %}

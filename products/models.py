@@ -3,7 +3,9 @@ from django.db import models
 # Create your models here.
 from django.contrib.auth.models import User
 from django.utils import timezone
+
 from datetime import datetime
+
 
 
 class Product(models.Model):
@@ -28,6 +30,9 @@ class Product(models.Model):
   def pub_date_pretty(self):
     return self.pub_date.strftime('%b %e %Y')
 
+
+
+
 #to ensure users are able to vote only once, we create a model called Vote to have a product ID and userID and check to see if user has a vote casted for the prodcut ID already then it should not be able to vote:
 class Vote(models.Model):
   product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -35,6 +40,10 @@ class Vote(models.Model):
 
   class Meta:
     unique_together = ('product','user')
+
+
+
+  # def pub_date_pretty(self):
 
 # class Comment(models.Model):
 #     product = models.ForeignKey(Product,on_delete=models.CASCADE, related_name='comments')

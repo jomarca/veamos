@@ -129,13 +129,17 @@
     {% for x in news %}
 
     <div class="col-sm-4">
-      <div class="card" >
+        <div class="card" style= "height:780px" >
           <img src={{x.image}} class="card-img-top" alt="Crypto News and Prices">
           <div class="card-body">
             <h5 class="card-title">{{x.title}} </h5>
             <p class="card-text">{{x.body|truncatechars:300}}... </p>
-            <a href={{x.url}}  class="btn btn-primary">Read more</a>
-            <small> Published {{x.created_at|naturaltime}}</small>
+            <a href={{x.url}}  class="btn btn-primary"  style=" position: absolute;
+            top: 720px;
+            left: 20px;">Read more</a>
+            <small class="text-info" style=" position: absolute;
+            top: 730px;
+            left: 150px;"> Published {{x.created_at|naturaltime}}</small>
           </div>
         </div>
         <br>

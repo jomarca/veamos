@@ -10,20 +10,21 @@
   {% endif %}
 
 <div class="container mt-5">
-    <div class="card text-center p-3 bg-success text-white"> <h5>Visit our new <a href="{% url 'home1' %}">Crypto Hunt section</a>  to add and upvote your favorite crypto projects.</h5>
-    </div>
+   
     <br>
   <div class="row">
      
       {% for x in news %}
 
       <div class="col-sm-4">
-        <div class="card" >
+        <div class="card" style= "height:780px" >
             <img src={{x.image}} class="card-img-top" alt="Crypto News and Prices">
             <div class="card-body">
               <h5 class="card-title">{{x.title}} </h5>
               <p class="card-text">{{x.body|truncatechars:300}}... </p>
-              <a href={{x.url}}  class="btn btn-primary">Read more</a>
+              <a href={{x.url}}  class="btn btn-primary" style=" position: absolute;
+              top: 700px;
+              left: 20px;">Read more</a>
             </div>
           </div>
           <br>

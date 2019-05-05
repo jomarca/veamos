@@ -6,6 +6,11 @@ import ast
 import datetime
 from django.core.paginator import EmptyPage,PageNotAnInteger,Paginator
 
+def manualreset(request):
+  
+  ThreadingExample()
+  return render(request,'home.html',{'deletion':'reset completed'})
+
 def home(request):
   news = News1.objects.order_by('-id')
   news = news[0:50]
@@ -278,7 +283,7 @@ def searchcrypto(request):
 def deletearbsfromdatabase(request):
   
   if request.method =='GET':
-    Arbscrypto.objects.filter(created_at__lte=(datetime.datetime.now() - datetime.timedelta(days=1)).delete())
+    Arbscrypto.objects.filter(created_at__lte=(datetime.datetime.now() - datetime.timedelta(days=1))).delete()
    
 
     return render(request,'home.html',{'deletion':'deletion completed'})
@@ -299,6 +304,40 @@ def deletearbsfromdatabase(request):
 #   api = json.loads(api_request.content)
 
 #   return render(request, 'home.html', {'api':api, 'price':price})
+
+def posttweet(request):
+  import tweepy
+
+  consumer_key = 'sOCtIn12MdBUekw7K8JW7Tm9p'
+  consumer_secret = 'aasdfd'
+  access_token = '1107203070998573056-WtHzQdR5Y1ZCS9hxZxGXFLYyr1dYLF'
+  access_token_secret = 'asdda'
+
+  auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+  auth.set_access_token(access_token, access_token_secret)
+
+  api = tweepy.API(auth)
+
+  arbitrage = Arbscrypto.objects.order_by('-created_at')
+  arbitrage = arbitrage[0:30]
+    
+    #statistics
+  hoyes = datetime.datetime.today().strftime('%Y-%m-%d')
+  statistics = Arbscrypto.objects.filter(created_at__date= hoyes)
+    # maximo = statistics['percentage'][0]
+  maximo = Arbscrypto.objects.filter(created_at__date= hoyes).order_by('-percentage').values()
+  maximo = maximo[0]
+  
+  public_tweets = api.home_timeline()
+  # for tweet in public_tweets:
+  #     print (tweet.text)
+  
+  procentaje = str(round(maximo['percentage'],2))
+  tweettopublish = maximo['pair'] + ' buy in ' + maximo['exchangebuy'] +' sell in '+ maximo['exchangesell'] + ' and take a ' + procentaje + '% profit. Discover more crypto arbs in cryptonewsandprices.me'
+  print(tweettopublish)  
+  api.update_status(tweettopublish)
+  return render(request,'home.html',{'deletion':'deletion completed or tweet posted'})
+
 
 def prices(request):
   pricebasedatos = Price.objects.order_by('-id')
@@ -343,7 +382,7 @@ class ThreadingExample(object):
     until the application exits.
     """
     time.sleep(1)
-    def __init__(self, interval=300):
+    def __init__(self, interval=10):
         """ Constructor
         :type interval: int
         :param interval: Check interval, in seconds

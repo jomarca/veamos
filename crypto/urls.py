@@ -18,4 +18,7 @@ urlpatterns = [
     path('arbsgreaterthan1/',views.arbsgreaterthan1,name='arbsgreaterthan1'),
     path('arbsgreaterthan2/',views.arbsgreaterthan2,name='arbsgreaterthan2'),
     path('arbsgreaterthan5/',views.arbsgreaterthan5,name='arbsgreaterthan5'),
+    path('manualreset/',views.manualreset,name='manualreset'),
+    path('posttweet/',views.posttweet,name='posttweet'),
+    
 ]

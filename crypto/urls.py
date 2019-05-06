@@ -20,5 +20,6 @@ urlpatterns = [
     path('arbsgreaterthan5/',views.arbsgreaterthan5,name='arbsgreaterthan5'),
     path('manualreset/',views.manualreset,name='manualreset'),
     path('posttweet/',views.posttweet,name='posttweet'),
+    path('postnewtweet/',views.postnewtweet,name='postnewtweet'),
     
 ]

@@ -307,11 +307,13 @@ def deletearbsfromdatabase(request):
 
 def posttweet(request):
   import tweepy
+  from mysite.local_settings import consumer_secret,access_token_secret
+
 
   consumer_key = 'sOCtIn12MdBUekw7K8JW7Tm9p'
-  consumer_secret = 'aasdfd'
+  consumer_secret = consumer_secret
   access_token = '1107203070998573056-WtHzQdR5Y1ZCS9hxZxGXFLYyr1dYLF'
-  access_token_secret = 'asdda'
+  access_token_secret = access_token_secret
 
   auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
   auth.set_access_token(access_token, access_token_secret)
@@ -338,6 +340,47 @@ def posttweet(request):
   api.update_status(tweettopublish)
   return render(request,'home.html',{'deletion':'deletion completed or tweet posted'})
 
+
+
+def postnewtweet(request):
+  import tweepy
+  from mysite.local_settings import consumer_secret,access_token_secret
+
+
+  consumer_key = 'sOCtIn12MdBUekw7K8JW7Tm9p'
+  consumer_secret = consumer_secret
+  access_token = '1107203070998573056-WtHzQdR5Y1ZCS9hxZxGXFLYyr1dYLF'
+  access_token_secret = access_token_secret
+
+  auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+  auth.set_access_token(access_token, access_token_secret)
+
+  api = tweepy.API(auth)
+
+  if request.method =='GET':
+    news = News1.objects.filter(created_at__year=2019).order_by('-id').values()
+    news = news[0:1]
+    print(news)
+
+  if datetime.date.today().weekday() == 0:
+    #Monday
+    tweettopublish = news[0]['title'] + ' . Visit cryptonewsandprices.me to find out more.   #crypto #cryptonews #cryptoarbs'
+  if datetime.date.today().weekday() == 1:
+    tweettopublish = news[0]['title'] + ' . This and much more crypto news in cryptonewsandprices.me.   #crypto #cryptonews #cryptoarbs'
+  if datetime.date.today().weekday() == 2:
+    tweettopublish = news[0]['title'] + ' . Find out amazing news about crypto in cryptonewsandprices.me.   #crypto #cryptonews #cryptoarbs'
+  if datetime.date.today().weekday() == 3:
+    tweettopublish = news[0]['title'] + ' . Cryptonews only one click away, cryptonewsandprices.me #crypto #cryptonews #cryptoarbs'
+  if datetime.date.today().weekday() == 4:
+    tweettopublish = news[0]['title'] + ' . Keep yourself informed about the latest crypto news with cryptonewsandprices.me #crypto #cryptonews #cryptoarbs'
+  if datetime.date.today().weekday() == 5:
+    tweettopublish = news[0]['title'] + ' . All latest crypto news in cryptonewsandprices.me #crypto #cryptonews #cryptoarbs'
+  if datetime.date.today().weekday() == 6:
+    tweettopublish = news[0]['title'] + ' . Cryptonewsandprices.me to know more. #crypto #cryptonews #cryptoarbs'
+
+
+  api.update_status(tweettopublish)
+  return render(request,'home.html',{'deletion':'deletion completed or tweet posted'})
 
 def prices(request):
   pricebasedatos = Price.objects.order_by('-id')
@@ -382,7 +425,7 @@ class ThreadingExample(object):
     until the application exits.
     """
     time.sleep(1)
-    def __init__(self, interval=10):
+    def __init__(self, interval=550):
         """ Constructor
         :type interval: int
         :param interval: Check interval, in seconds
@@ -944,91 +987,177 @@ class ThreadingExample(object):
                   moneda = x
                   print(x)
                   print('coss:'+ str(marketpricecossbuy),'bibox:'+ str(marketpricebiboxbuy),'binance:'+str(marketpricebinancebuy),'kraken:'+str(marketpricekrakenbuy),'coinmate:'+str(marketpricecoinmatebuy),'kcs:'+str(marketpricekcsbuy),'hitbtc:'+str(marketpricehitbtcbuy),'gemini:'+str(marketpricegeminibuy),'bitfinex:'+str(marketpricebitfinexbuy),'bitstamp:'+str(marketpricebitstampbuy),'okex:'+str(marketpriceokexbuy),'coinbene:'+str(marketpricecoinbenebuy),'huboi:'+str(marketpricehuboibuy))
+                  try:
+                    if x == 'ETH_BTC':
+                      dictionariopreciocompra = {'coss':marketpricecossbuy, 'bibox':marketpricebiboxbuy, 'binance': marketpricebinancebuy , 'kraken':marketpricekrakenbuy,'coinmate':marketpricecoinmatebuy, 'kucoin': marketpricekcsbuy,'hitbtc':marketpricehitbtcbuy,'gemini':marketpricegeminibuy,'bitfinex':marketpricebitfinexbuy,'bitstamp':marketpricebitstampbuy,'okex':marketpriceokexbuy,'coinbene':marketpricecoinbenebuy,'huboi':marketpricehuboibuy}
+                      dictionarioprecioventa = {'coss':marketpricecosssell,'bibox':marketpricebiboxsell, 'binance':marketpricebinancesell, 'kraken':marketpricekrakensell,'coinmate': marketpricecoinmatesell,'kucoin': marketpricekcssell,'hitbtc':marketpricehitbtcsell,'gemini':marketpricegeminisell,'bitfinex':marketpricebitfinexsell,'bitstamp':marketpricebitstampsell,'okex':marketpriceokexsell,'coinbene':marketpricecoinbenesell,'huboi':marketpricehuboisell}
+                  except:
+                    pass
 
-                  if x == 'ETH_BTC':
-                    dictionariopreciocompra = {'coss':marketpricecossbuy, 'bibox':marketpricebiboxbuy, 'binance': marketpricebinancebuy , 'kraken':marketpricekrakenbuy,'coinmate':marketpricecoinmatebuy, 'kucoin': marketpricekcsbuy,'hitbtc':marketpricehitbtcbuy,'gemini':marketpricegeminibuy,'bitfinex':marketpricebitfinexbuy,'bitstamp':marketpricebitstampbuy,'okex':marketpriceokexbuy,'coinbene':marketpricecoinbenebuy,'huboi':marketpricehuboibuy}
-                    dictionarioprecioventa = {'coss':marketpricecosssell,'bibox':marketpricebiboxsell, 'binance':marketpricebinancesell, 'kraken':marketpricekrakensell,'coinmate': marketpricecoinmatesell,'kucoin': marketpricekcssell,'hitbtc':marketpricehitbtcsell,'gemini':marketpricegeminisell,'bitfinex':marketpricebitfinexsell,'bitstamp':marketpricebitstampsell,'okex':marketpriceokexsell,'coinbene':marketpricecoinbenesell,'huboi':marketpricehuboisell}
-                  if x == 'NEO_BTC':
-                    dictionariopreciocompra = {'coss':marketpricecossbuy, 'bibox':marketpricebiboxbuy, 'binance': marketpricebinancebuy,'kucoin': marketpricekcsbuy,'hitbtc':marketpricehitbtcbuy,'bitfinex':marketpricebitfinexbuy,'okex':marketpriceokexbuy,'coinbene':marketpricecoinbenebuy }
-                    dictionarioprecioventa = {'coss':marketpricecosssell,'bibox':marketpricebiboxsell, 'binance':marketpricebinancesell, 'kucoin': marketpricekcssell,'hitbtc':marketpricehitbtcsell,'bitfinex':marketpricebitfinexsell,'okex':marketpriceokexsell,'coinbene':marketpricecoinbenesell}
-                  if x == 'NEO_ETH':
-                    dictionariopreciocompra = {'coss':marketpricecossbuy, 'bibox':marketpricebiboxbuy, 'binance': marketpricebinancebuy,'kucoin': marketpricekcsbuy,'hitbtc':marketpricehitbtcbuy,'bitfinex':marketpricebitfinexbuy,'okex':marketpriceokexbuy }
-                    dictionarioprecioventa = {'coss':marketpricecosssell,'bibox':marketpricebiboxsell, 'binance':marketpricebinancesell, 'kucoin': marketpricekcssell,'hitbtc':marketpricehitbtcsell,'bitfinex':marketpricebitfinexsell,'okex':marketpriceokexsell,}
-                  if x == 'LTC_BTC':
-                    dictionariopreciocompra = {'coss':marketpricecossbuy, 'bibox':marketpricebiboxbuy, 'binance': marketpricebinancebuy , 'coinmate':marketpricecoinmatebuy,'kucoin': marketpricekcsbuy,'hitbtc':marketpricehitbtcbuy,'gemini':marketpricegeminibuy,'bitfinex':marketpricebitfinexbuy,'bitstamp':marketpricebitstampbuy,'okex':marketpriceokexbuy,'coinbene':marketpricecoinbenebuy,'huboi':marketpricehuboibuy}
-                    dictionarioprecioventa = {'coss':marketpricecosssell,'bibox':marketpricebiboxsell, 'binance':marketpricebinancesell, 'coinmate': marketpricecoinmatesell, 'kucoin': marketpricekcssell,'hitbtc':marketpricehitbtcsell,'gemini':marketpricegeminisell,'bitfinex':marketpricebitfinexsell,'bitstamp':marketpricebitstampsell,'okex':marketpriceokexsell,'coinbene':marketpricecoinbenesell,'huboi':marketpricehuboisell}
-                  if x == 'XRP_ETH':
-                    dictionariopreciocompra = {'coss':marketpricecossbuy, 'bibox':marketpricebiboxbuy, 'binance': marketpricebinancebuy , 'kucoin': marketpricekcsbuy,'hitbtc':marketpricehitbtcbuy,'okex':marketpriceokexbuy}
-                    dictionarioprecioventa = {'coss':marketpricecosssell,'bibox':marketpricebiboxsell, 'binance':marketpricebinancesell, 'kucoin': marketpricekcssell,'hitbtc':marketpricehitbtcsell,'okex':marketpriceokexsell}
-                  if x == 'EOS_ETH':
-                    dictionariopreciocompra = {'coss':marketpricecossbuy, 'bibox':marketpricebiboxbuy, 'binance': marketpricebinancebuy , 'kraken':marketpricekrakenbuy,'kucoin': marketpricekcsbuy,'hitbtc':marketpricehitbtcbuy,'bitfinex':marketpricebitfinexbuy,'okex':marketpriceokexbuy}
-                    dictionarioprecioventa = {'coss':marketpricecosssell,'bibox':marketpricebiboxsell, 'binance':marketpricebinancesell, 'kraken':marketpricekrakensell,'kucoin': marketpricekcssell,'hitbtc':marketpricehitbtcsell,'bitfinex':marketpricebitfinexsell,'okex':marketpriceokexsell}
-                  if x == 'DASH_BTC':
-                    dictionariopreciocompra = {'coss':marketpricecossbuy, 'bibox':marketpricebiboxbuy, 'binance': marketpricebinancebuy , 'kraken':marketpricekrakenbuy,'coinmate':marketpricecoinmatebuy, 'kucoin': marketpricekcsbuy,'okex':marketpriceokexbuy,'huboi':marketpricehuboibuy}
-                    dictionarioprecioventa = {'coss':marketpricecosssell,'bibox':marketpricebiboxsell, 'binance':marketpricebinancesell, 'kraken':marketpricekrakensell,'coinmate': marketpricecoinmatesell,'kucoin': marketpricekcssell,'okex':marketpriceokexsell,'huboi':marketpricehuboisell}
-                  if x == 'XLM_BTC':
-                    dictionariopreciocompra = {'coss':marketpricecossbuy, 'binance': marketpricebinancebuy , 'kraken':marketpricekrakenbuy, 'kucoin': marketpricekcsbuy,'hitbtc':marketpricehitbtcbuy,'bitfinex':marketpricebitfinexbuy,'okex':marketpriceokexbuy,'coinbene':marketpricecoinbenebuy,'huboi':marketpricehuboibuy}
-                    dictionarioprecioventa = {'coss':marketpricecosssell, 'binance':marketpricebinancesell, 'kraken':marketpricekrakensell, 'kucoin': marketpricekcssell,'hitbtc':marketpricehitbtcsell,'bitfinex':marketpricebitfinexsell,'okex':marketpriceokexsell,'coinbene':marketpricecoinbenesell,'huboi':marketpricehuboisell}
+                  try:
+                    if x == 'NEO_BTC':
+                      dictionariopreciocompra = {'coss':marketpricecossbuy, 'bibox':marketpricebiboxbuy, 'binance': marketpricebinancebuy,'kucoin': marketpricekcsbuy,'hitbtc':marketpricehitbtcbuy,'bitfinex':marketpricebitfinexbuy,'okex':marketpriceokexbuy,'coinbene':marketpricecoinbenebuy }
+                      dictionarioprecioventa = {'coss':marketpricecosssell,'bibox':marketpricebiboxsell, 'binance':marketpricebinancesell, 'kucoin': marketpricekcssell,'hitbtc':marketpricehitbtcsell,'bitfinex':marketpricebitfinexsell,'okex':marketpriceokexsell,'coinbene':marketpricecoinbenesell}
+                  except:
+                    pass
+                  try:
+                    if x == 'NEO_ETH':
+                      dictionariopreciocompra = {'coss':marketpricecossbuy, 'bibox':marketpricebiboxbuy, 'binance': marketpricebinancebuy,'kucoin': marketpricekcsbuy,'hitbtc':marketpricehitbtcbuy,'bitfinex':marketpricebitfinexbuy,'okex':marketpriceokexbuy }
+                      dictionarioprecioventa = {'coss':marketpricecosssell,'bibox':marketpricebiboxsell, 'binance':marketpricebinancesell, 'kucoin': marketpricekcssell,'hitbtc':marketpricehitbtcsell,'bitfinex':marketpricebitfinexsell,'okex':marketpriceokexsell,}
+                  except:
+                    pass
 
-                  if x == 'ADA_ETH':
-                    dictionariopreciocompra = {'binance': marketpricebinancebuy , 'kraken':marketpricekrakenbuy, 'hitbtc':marketpricehitbtcbuy,'okex':marketpriceokexbuy,'huboi':marketpricehuboibuy}
-                    dictionarioprecioventa = {'binance':marketpricebinancesell, 'kraken':marketpricekrakensell, 'hitbtc':marketpricehitbtcsell,'okex':marketpriceokexsell,'huboi':marketpricehuboisell}
+                  try:
+                    if x == 'LTC_BTC':
+                      dictionariopreciocompra = {'coss':marketpricecossbuy, 'bibox':marketpricebiboxbuy, 'binance': marketpricebinancebuy , 'coinmate':marketpricecoinmatebuy,'kucoin': marketpricekcsbuy,'hitbtc':marketpricehitbtcbuy,'gemini':marketpricegeminibuy,'bitfinex':marketpricebitfinexbuy,'bitstamp':marketpricebitstampbuy,'okex':marketpriceokexbuy,'coinbene':marketpricecoinbenebuy,'huboi':marketpricehuboibuy}
+                      dictionarioprecioventa = {'coss':marketpricecosssell,'bibox':marketpricebiboxsell, 'binance':marketpricebinancesell, 'coinmate': marketpricecoinmatesell, 'kucoin': marketpricekcssell,'hitbtc':marketpricehitbtcsell,'gemini':marketpricegeminisell,'bitfinex':marketpricebitfinexsell,'bitstamp':marketpricebitstampsell,'okex':marketpriceokexsell,'coinbene':marketpricecoinbenesell,'huboi':marketpricehuboisell}
+                  except:
+                    pass
 
-                  if x == 'XRP_BTC':
+                  try:
+                    if x == 'XRP_ETH':
+                      dictionariopreciocompra = {'coss':marketpricecossbuy, 'bibox':marketpricebiboxbuy, 'binance': marketpricebinancebuy , 'kucoin': marketpricekcsbuy,'hitbtc':marketpricehitbtcbuy,'okex':marketpriceokexbuy}
+                      dictionarioprecioventa = {'coss':marketpricecosssell,'bibox':marketpricebiboxsell, 'binance':marketpricebinancesell, 'kucoin': marketpricekcssell,'hitbtc':marketpricehitbtcsell,'okex':marketpriceokexsell}
+                  except:
+                    pass
                   
-                    dictionariopreciocompra = {'coss':marketpricecossbuy, 'bibox':marketpricebiboxbuy, 'binance': marketpricebinancebuy , 'kraken':marketpricekrakenbuy,'coinmate':marketpricecoinmatebuy, 'kucoin': marketpricekcsbuy,'hitbtc':marketpricehitbtcbuy,'bitfinex':marketpricebitfinexbuy,'bitstamp':marketpricebitstampbuy,'okex':marketpriceokexbuy,'coinbene':marketpricecoinbenebuy,'huboi':marketpricehuboibuy}
-                    dictionarioprecioventa = {'coss':marketpricecosssell,'bibox':marketpricebiboxsell, 'binance':marketpricebinancesell, 'kraken':marketpricekrakensell,'coinmate': marketpricecoinmatesell,'kucoin': marketpricekcssell,'hitbtc':marketpricehitbtcsell,'bitfinex':marketpricebitfinexsell,'bitstamp':marketpricebitstampsell,'okex':marketpriceokexsell,'coinbene':marketpricecoinbenesell,'huboi':marketpricehuboisell}
+                  try:
+                    if x == 'EOS_ETH':
+                      dictionariopreciocompra = {'coss':marketpricecossbuy, 'bibox':marketpricebiboxbuy, 'binance': marketpricebinancebuy , 'kraken':marketpricekrakenbuy,'kucoin': marketpricekcsbuy,'hitbtc':marketpricehitbtcbuy,'bitfinex':marketpricebitfinexbuy,'okex':marketpriceokexbuy}
+                      dictionarioprecioventa = {'coss':marketpricecosssell,'bibox':marketpricebiboxsell, 'binance':marketpricebinancesell, 'kraken':marketpricekrakensell,'kucoin': marketpricekcssell,'hitbtc':marketpricehitbtcsell,'bitfinex':marketpricebitfinexsell,'okex':marketpriceokexsell}
+                  except:
+                    pass
+                  
+                  try:
+                    if x == 'DASH_BTC':
+                      dictionariopreciocompra = {'coss':marketpricecossbuy, 'bibox':marketpricebiboxbuy, 'binance': marketpricebinancebuy , 'kraken':marketpricekrakenbuy,'coinmate':marketpricecoinmatebuy, 'kucoin': marketpricekcsbuy,'okex':marketpriceokexbuy,'huboi':marketpricehuboibuy}
+                      dictionarioprecioventa = {'coss':marketpricecosssell,'bibox':marketpricebiboxsell, 'binance':marketpricebinancesell, 'kraken':marketpricekrakensell,'coinmate': marketpricecoinmatesell,'kucoin': marketpricekcssell,'okex':marketpriceokexsell,'huboi':marketpricehuboisell}
+                  except:
+                    pass
+                  try:
 
-                  if x == 'ETC_BTC':
+                    if x == 'XLM_BTC':
+                      dictionariopreciocompra = {'coss':marketpricecossbuy, 'binance': marketpricebinancebuy , 'kraken':marketpricekrakenbuy, 'kucoin': marketpricekcsbuy,'hitbtc':marketpricehitbtcbuy,'bitfinex':marketpricebitfinexbuy,'okex':marketpriceokexbuy,'coinbene':marketpricecoinbenebuy,'huboi':marketpricehuboibuy}
+                      dictionarioprecioventa = {'coss':marketpricecosssell, 'binance':marketpricebinancesell, 'kraken':marketpricekrakensell, 'kucoin': marketpricekcssell,'hitbtc':marketpricehitbtcsell,'bitfinex':marketpricebitfinexsell,'okex':marketpriceokexsell,'coinbene':marketpricecoinbenesell,'huboi':marketpricehuboisell}
+                  except:
+                    pass
+
+                  try:
+                    if x == 'ADA_ETH':
+                      dictionariopreciocompra = {'binance': marketpricebinancebuy , 'kraken':marketpricekrakenbuy, 'hitbtc':marketpricehitbtcbuy,'okex':marketpriceokexbuy,'huboi':marketpricehuboibuy}
+                      dictionarioprecioventa = {'binance':marketpricebinancesell, 'kraken':marketpricekrakensell, 'hitbtc':marketpricehitbtcsell,'okex':marketpriceokexsell,'huboi':marketpricehuboisell}
+                  except:
+                    pass
+
+                  try:
+                    if x == 'XRP_BTC':
                     
-                    dictionariopreciocompra = {'bibox':marketpricebiboxbuy, 'binance': marketpricebinancebuy , 'kraken':marketpricekrakenbuy,'kucoin': marketpricekcsbuy,'hitbtc':marketpricehitbtcbuy,'bitfinex':marketpricebitfinexbuy,'okex':marketpriceokexbuy,'coinbene':marketpricecoinbenebuy,'huboi':marketpricehuboibuy}
-                    dictionarioprecioventa = {'bibox':marketpricebiboxsell, 'binance':marketpricebinancesell, 'kraken':marketpricekrakensell,'kucoin': marketpricekcssell,'hitbtc':marketpricehitbtcsell,'bitfinex':marketpricebitfinexsell,'okex':marketpriceokexsell,'coinbene':marketpricecoinbenesell,'huboi':marketpricehuboisell}
+                      dictionariopreciocompra = {'coss':marketpricecossbuy, 'bibox':marketpricebiboxbuy, 'binance': marketpricebinancebuy , 'kraken':marketpricekrakenbuy,'coinmate':marketpricecoinmatebuy, 'kucoin': marketpricekcsbuy,'hitbtc':marketpricehitbtcbuy,'bitfinex':marketpricebitfinexbuy,'bitstamp':marketpricebitstampbuy,'okex':marketpriceokexbuy,'coinbene':marketpricecoinbenebuy,'huboi':marketpricehuboibuy}
+                      dictionarioprecioventa = {'coss':marketpricecosssell,'bibox':marketpricebiboxsell, 'binance':marketpricebinancesell, 'kraken':marketpricekrakensell,'coinmate': marketpricecoinmatesell,'kucoin': marketpricekcssell,'hitbtc':marketpricehitbtcsell,'bitfinex':marketpricebitfinexsell,'bitstamp':marketpricebitstampsell,'okex':marketpriceokexsell,'coinbene':marketpricecoinbenesell,'huboi':marketpricehuboisell}
+                  except:
+                    pass
 
-                  if x == 'TRX_ETH':
-                    dictionariopreciocompra = {'coss':marketpricecossbuy, 'bibox':marketpricebiboxbuy, 'binance': marketpricebinancebuy,'kucoin': marketpricekcsbuy,'hitbtc':marketpricehitbtcbuy,'bitfinex':marketpricebitfinexbuy,'okex':marketpriceokexbuy}
-                    dictionarioprecioventa = {'coss':marketpricecosssell,'bibox':marketpricebiboxsell, 'binance':marketpricebinancesell, 'kucoin': marketpricekcssell,'hitbtc':marketpricehitbtcsell,'bitfinex':marketpricebitfinexsell,'okex':marketpriceokexsell}
-                  if x == 'ZEC_BTC':
-                    dictionariopreciocompra = {'binance': marketpricebinancebuy , 'kraken':marketpricekrakenbuy,'hitbtc':marketpricehitbtcbuy,'gemini':marketpricegeminibuy,'bitfinex':marketpricebitfinexbuy,'okex':marketpriceokexbuy,'coinbene':marketpricecoinbenebuy,'huboi':marketpricehuboibuy}
-                    dictionarioprecioventa = {'binance':marketpricebinancesell, 'kraken':marketpricekrakensell,'hitbtc':marketpricehitbtcsell,'gemini':marketpricegeminisell,'bitfinex':marketpricebitfinexsell,'okex':marketpriceokexsell,'coinbene':marketpricecoinbenesell,'huboi':marketpricehuboisell}
-                  if x == 'ETH_USDT':
-                    dictionariopreciocompra = {'coss':marketpricecossbuy, 'bibox':marketpricebiboxbuy, 'binance': marketpricebinancebuy ,'kucoin': marketpricekcsbuy,'hitbtc':marketpricehitbtcbuy,'bitfinex':marketpricebitfinexbuy,'okex':marketpriceokexbuy,'coinbene':marketpricecoinbenebuy,'huboi':marketpricehuboibuy}
-                    dictionarioprecioventa = {'coss':marketpricecosssell,'bibox':marketpricebiboxsell, 'binance':marketpricebinancesell, 'kucoin': marketpricekcssell,'hitbtc':marketpricehitbtcsell,'bitfinex':marketpricebitfinexsell,'okex':marketpriceokexsell,'coinbene':marketpricecoinbenesell,'huboi':marketpricehuboisell}
-                  if x == 'BTC_USDT':
-                    dictionariopreciocompra = {'coss':marketpricecossbuy, 'bibox':marketpricebiboxbuy, 'binance': marketpricebinancebuy ,  'kucoin': marketpricekcsbuy,'hitbtc':marketpricehitbtcbuy,'bitfinex':marketpricebitfinexbuy,'okex':marketpriceokexbuy,'coinbene':marketpricecoinbenebuy,'huboi':marketpricehuboibuy}
-                    dictionarioprecioventa = {'coss':marketpricecosssell,'bibox':marketpricebiboxsell, 'binance':marketpricebinancesell, 'kucoin': marketpricekcssell,'hitbtc':marketpricehitbtcsell,'bitfinex':marketpricebitfinexsell,'okex':marketpriceokexsell,'coinbene':marketpricecoinbenesell,'huboi':marketpricehuboisell}
-                  if x == 'LTC_ETH':
-                    dictionariopreciocompra = {'coss':marketpricecossbuy, 'bibox':marketpricebiboxbuy, 'binance': marketpricebinancebuy , 'kucoin': marketpricekcsbuy,'hitbtc':marketpricehitbtcbuy,'gemini':marketpricegeminibuy,'okex':marketpriceokexbuy}
-                    dictionarioprecioventa = {'coss':marketpricecosssell,'bibox':marketpricebiboxsell, 'binance':marketpricebinancesell, 'kucoin': marketpricekcssell,'hitbtc':marketpricehitbtcsell,'gemini':marketpricegeminisell,'okex':marketpriceokexsell}
-                  if x == 'EOS_BTC':
-                    dictionariopreciocompra = {'coss':marketpricecossbuy, 'bibox':marketpricebiboxbuy, 'binance': marketpricebinancebuy, 'kucoin': marketpricekcsbuy,'hitbtc':marketpricehitbtcbuy,'bitfinex':marketpricebitfinexbuy,'okex':marketpriceokexbuy,'coinbene':marketpricecoinbenebuy}
-                    dictionarioprecioventa = {'coss':marketpricecosssell,'bibox':marketpricebiboxsell, 'binance':marketpricebinancesell,'kucoin': marketpricekcssell,'hitbtc':marketpricehitbtcsell,'bitfinex':marketpricebitfinexsell,'okex':marketpriceokexsell,'coinbene':marketpricecoinbenesell}
-                  if x == 'XLM_ETH':
-                    dictionariopreciocompra = {'coss':marketpricecossbuy, 'binance': marketpricebinancebuy, 'kucoin': marketpricekcsbuy,'hitbtc':marketpricehitbtcbuy,'bitfinex':marketpricebitfinexbuy,'okex':marketpriceokexbuy,'huboi':marketpricehuboibuy}
-                    dictionarioprecioventa = {'coss':marketpricecosssell, 'binance':marketpricebinancesell, 'kucoin': marketpricekcssell,'hitbtc':marketpricehitbtcsell,'bitfinex':marketpricebitfinexsell,'okex':marketpriceokexsell,'huboi':marketpricehuboisell}
-                  if x == 'ONT_BTC':
-                    dictionariopreciocompra = {'binance': marketpricebinancebuy,'bibox':marketpricebiboxbuy,'kucoin': marketpricekcsbuy,'hitbtc':marketpricehitbtcbuy,'okex':marketpriceokexbuy,'huboi':marketpricehuboibuy}
-                    dictionarioprecioventa = {'binance':marketpricebinancesell,'bibox':marketpricebiboxsell, 'kucoin': marketpricekcssell,'hitbtc':marketpricehitbtcsell,'okex':marketpriceokexsell,'huboi':marketpricehuboisell}
-                  if x == 'ONT_ETH':
-                    dictionariopreciocompra = {'binance': marketpricebinancebuy,'bibox':marketpricebiboxbuy,'kucoin': marketpricekcsbuy,'hitbtc':marketpricehitbtcbuy,'okex':marketpriceokexbuy,'huboi':marketpricehuboibuy}
-                    dictionarioprecioventa = {'binance':marketpricebinancesell,'bibox':marketpricebiboxsell, 'kucoin': marketpricekcssell,'hitbtc':marketpricehitbtcsell,'okex':marketpriceokexsell,'huboi':marketpricehuboisell}
-                  if x == 'ATOM_BTC':
-                    dictionariopreciocompra = {'binance': marketpricebinancebuy,'kraken':marketpricekrakenbuy,'bitfinex':marketpricebitfinexbuy,'okex':marketpriceokexbuy}
-                    dictionarioprecioventa = {'binance': marketpricebinancesell,'kraken':marketpricekrakensell,'bitfinex':marketpricebitfinexsell,'okex':marketpriceokexsell}
-                  if x == 'ATOM_ETH':
-                    dictionariopreciocompra = {'bibox': marketpricebiboxbuy,'kraken':marketpricekrakenbuy,'bitfinex':marketpricebitfinexbuy,'okex':marketpriceokexbuy}
-                    dictionarioprecioventa = {'bibox': marketpricebiboxsell,'kraken':marketpricekrakensell,'bitfinex':marketpricebitfinexsell,'okex':marketpriceokexsell}
+                  try:
+                    if x == 'ETC_BTC':
+                      
+                      dictionariopreciocompra = {'bibox':marketpricebiboxbuy, 'binance': marketpricebinancebuy , 'kraken':marketpricekrakenbuy,'kucoin': marketpricekcsbuy,'hitbtc':marketpricehitbtcbuy,'bitfinex':marketpricebitfinexbuy,'okex':marketpriceokexbuy,'coinbene':marketpricecoinbenebuy,'huboi':marketpricehuboibuy}
+                      dictionarioprecioventa = {'bibox':marketpricebiboxsell, 'binance':marketpricebinancesell, 'kraken':marketpricekrakensell,'kucoin': marketpricekcssell,'hitbtc':marketpricehitbtcsell,'bitfinex':marketpricebitfinexsell,'okex':marketpriceokexsell,'coinbene':marketpricecoinbenesell,'huboi':marketpricehuboisell}
+                  except:
+                    pass
 
-                  minpricecompra = (min(dictionariopreciocompra.items(), key=lambda k: k[1]))
-                  exchangecompra = minpricecompra[0]
-                  pricecompra= minpricecompra[1]
+                  try:
+                    if x == 'TRX_ETH':
+                      dictionariopreciocompra = {'coss':marketpricecossbuy, 'bibox':marketpricebiboxbuy, 'binance': marketpricebinancebuy,'kucoin': marketpricekcsbuy,'hitbtc':marketpricehitbtcbuy,'bitfinex':marketpricebitfinexbuy,'okex':marketpriceokexbuy}
+                      dictionarioprecioventa = {'coss':marketpricecosssell,'bibox':marketpricebiboxsell, 'binance':marketpricebinancesell, 'kucoin': marketpricekcssell,'hitbtc':marketpricehitbtcsell,'bitfinex':marketpricebitfinexsell,'okex':marketpriceokexsell}
+                  except:
+                    pass
 
-                  maxpriceventa = (max(dictionarioprecioventa.items(), key=lambda k: k[1]))
-                  exchangeventa = maxpriceventa[0]
-                  priceventa= maxpriceventa[1]
+                  try:
+                
+                    if x == 'ZEC_BTC':
+                      dictionariopreciocompra = {'binance': marketpricebinancebuy , 'kraken':marketpricekrakenbuy,'hitbtc':marketpricehitbtcbuy,'gemini':marketpricegeminibuy,'bitfinex':marketpricebitfinexbuy,'okex':marketpriceokexbuy,'coinbene':marketpricecoinbenebuy,'huboi':marketpricehuboibuy}
+                      dictionarioprecioventa = {'binance':marketpricebinancesell, 'kraken':marketpricekrakensell,'hitbtc':marketpricehitbtcsell,'gemini':marketpricegeminisell,'bitfinex':marketpricebitfinexsell,'okex':marketpriceokexsell,'coinbene':marketpricecoinbenesell,'huboi':marketpricehuboisell}
 
-                  percentage = ((priceventa - pricecompra)/pricecompra)*100
-                  print(percentage)
-                  
+                  except:
+                    pass
+
+                  try:
+                    if x == 'ETH_USDT':
+                      dictionariopreciocompra = {'coss':marketpricecossbuy, 'bibox':marketpricebiboxbuy, 'binance': marketpricebinancebuy ,'kucoin': marketpricekcsbuy,'hitbtc':marketpricehitbtcbuy,'bitfinex':marketpricebitfinexbuy,'okex':marketpriceokexbuy,'coinbene':marketpricecoinbenebuy,'huboi':marketpricehuboibuy}
+                      dictionarioprecioventa = {'coss':marketpricecosssell,'bibox':marketpricebiboxsell, 'binance':marketpricebinancesell, 'kucoin': marketpricekcssell,'hitbtc':marketpricehitbtcsell,'bitfinex':marketpricebitfinexsell,'okex':marketpriceokexsell,'coinbene':marketpricecoinbenesell,'huboi':marketpricehuboisell}
+                  except:
+                    pass
+                  try:
+                    if x == 'BTC_USDT':
+                      dictionariopreciocompra = {'coss':marketpricecossbuy, 'bibox':marketpricebiboxbuy, 'binance': marketpricebinancebuy ,  'kucoin': marketpricekcsbuy,'hitbtc':marketpricehitbtcbuy,'bitfinex':marketpricebitfinexbuy,'okex':marketpriceokexbuy,'coinbene':marketpricecoinbenebuy,'huboi':marketpricehuboibuy}
+                      dictionarioprecioventa = {'coss':marketpricecosssell,'bibox':marketpricebiboxsell, 'binance':marketpricebinancesell, 'kucoin': marketpricekcssell,'hitbtc':marketpricehitbtcsell,'bitfinex':marketpricebitfinexsell,'okex':marketpriceokexsell,'coinbene':marketpricecoinbenesell,'huboi':marketpricehuboisell}
+                  except:
+                    pass
+
+                  try:
+                    if x == 'LTC_ETH':
+                      dictionariopreciocompra = {'coss':marketpricecossbuy, 'bibox':marketpricebiboxbuy, 'binance': marketpricebinancebuy , 'kucoin': marketpricekcsbuy,'hitbtc':marketpricehitbtcbuy,'gemini':marketpricegeminibuy,'okex':marketpriceokexbuy}
+                      dictionarioprecioventa = {'coss':marketpricecosssell,'bibox':marketpricebiboxsell, 'binance':marketpricebinancesell, 'kucoin': marketpricekcssell,'hitbtc':marketpricehitbtcsell,'gemini':marketpricegeminisell,'okex':marketpriceokexsell}
+                  except:
+                    pass
+
+                  try:
+                    if x == 'EOS_BTC':
+                      dictionariopreciocompra = {'coss':marketpricecossbuy, 'bibox':marketpricebiboxbuy, 'binance': marketpricebinancebuy, 'kucoin': marketpricekcsbuy,'hitbtc':marketpricehitbtcbuy,'bitfinex':marketpricebitfinexbuy,'okex':marketpriceokexbuy,'coinbene':marketpricecoinbenebuy}
+                      dictionarioprecioventa = {'coss':marketpricecosssell,'bibox':marketpricebiboxsell, 'binance':marketpricebinancesell,'kucoin': marketpricekcssell,'hitbtc':marketpricehitbtcsell,'bitfinex':marketpricebitfinexsell,'okex':marketpriceokexsell,'coinbene':marketpricecoinbenesell}
+
+                  except:
+                    pass
+
+                  try:
+                    if x == 'XLM_ETH':
+                      dictionariopreciocompra = {'coss':marketpricecossbuy, 'binance': marketpricebinancebuy, 'kucoin': marketpricekcsbuy,'hitbtc':marketpricehitbtcbuy,'bitfinex':marketpricebitfinexbuy,'okex':marketpriceokexbuy,'huboi':marketpricehuboibuy}
+                      dictionarioprecioventa = {'coss':marketpricecosssell, 'binance':marketpricebinancesell, 'kucoin': marketpricekcssell,'hitbtc':marketpricehitbtcsell,'bitfinex':marketpricebitfinexsell,'okex':marketpriceokexsell,'huboi':marketpricehuboisell}
+                  except:
+                    pass
+
+                  try:
+                    if x == 'ONT_BTC':
+                      dictionariopreciocompra = {'binance': marketpricebinancebuy,'bibox':marketpricebiboxbuy,'kucoin': marketpricekcsbuy,'hitbtc':marketpricehitbtcbuy,'okex':marketpriceokexbuy,'huboi':marketpricehuboibuy}
+                      dictionarioprecioventa = {'binance':marketpricebinancesell,'bibox':marketpricebiboxsell, 'kucoin': marketpricekcssell,'hitbtc':marketpricehitbtcsell,'okex':marketpriceokexsell,'huboi':marketpricehuboisell}
+                  except:
+                    pass
+
+                  try:
+                    if x == 'ONT_ETH':
+                      dictionariopreciocompra = {'binance': marketpricebinancebuy,'bibox':marketpricebiboxbuy,'kucoin': marketpricekcsbuy,'hitbtc':marketpricehitbtcbuy,'okex':marketpriceokexbuy,'huboi':marketpricehuboibuy}
+                      dictionarioprecioventa = {'binance':marketpricebinancesell,'bibox':marketpricebiboxsell, 'kucoin': marketpricekcssell,'hitbtc':marketpricehitbtcsell,'okex':marketpriceokexsell,'huboi':marketpricehuboisell}
+                  except:
+                    pass
+
+                  try:
+                    if x == 'ATOM_BTC':
+                      dictionariopreciocompra = {'binance': marketpricebinancebuy,'kraken':marketpricekrakenbuy,'bitfinex':marketpricebitfinexbuy,'okex':marketpriceokexbuy}
+                      dictionarioprecioventa = {'binance': marketpricebinancesell,'kraken':marketpricekrakensell,'bitfinex':marketpricebitfinexsell,'okex':marketpriceokexsell}
+                  except:
+                    pass
+
+                  try:
+                    
+                    if x == 'ATOM_ETH':
+                      dictionariopreciocompra = {'bibox': marketpricebiboxbuy,'kraken':marketpricekrakenbuy,'bitfinex':marketpricebitfinexbuy,'okex':marketpriceokexbuy}
+                      dictionarioprecioventa = {'bibox': marketpricebiboxsell,'kraken':marketpricekrakensell,'bitfinex':marketpricebitfinexsell,'okex':marketpriceokexsell}
+                  except:
+                    pass
+
+                  try:
+                    minpricecompra = (min(dictionariopreciocompra.items(), key=lambda k: k[1]))
+                    exchangecompra = minpricecompra[0]
+                    pricecompra= minpricecompra[1]
+
+                    maxpriceventa = (max(dictionarioprecioventa.items(), key=lambda k: k[1]))
+                    exchangeventa = maxpriceventa[0]
+                    priceventa= maxpriceventa[1]
+
+                    percentage = ((priceventa - pricecompra)/pricecompra)*100
+                    print(percentage)
+                  except:
+                    pass
                   #check for percentage to be at least 0.5%
                   if percentage > 0.2:
                     if pricecompra < priceventa:
